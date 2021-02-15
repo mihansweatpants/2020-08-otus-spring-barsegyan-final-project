@@ -1,17 +1,12 @@
 # Фронтенд для проектной работы
 
+Веб-интерфейс для онлайн-мессенджера
 
-## Как запускать
+## Технологии
 
-### Установка зависимостей
+- React
+- Typescript
+- Redux
+- axios, stompjs
 
-```bash
-npx yarn
-```
-
-### Запуск дев-сервера с приложением
-
-
-```bash
-npx yarn start
-```
+### Приложение собирается в Docker-образ (nginx, раздающий статику) и деплоится на [heroku](https://otus-final-project-frontend.herokuapp.com/).
