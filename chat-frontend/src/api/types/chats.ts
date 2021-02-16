@@ -7,12 +7,18 @@ export interface ChatDto {
   members: UserDto[];
 }
 
+export enum ChatMessageType {
+  USER_MESSAGE = 'USER_MESSAGE',
+  SERVICE_MESSAGE = 'SERVICE_MESSAGE',
+}
+
 export interface ChatMessageDto {
   id: string;
   chatId: string;
   sentAt: string;
-  sentBy: UserDto;
+  sentBy: UserDto | null;
   text: string;
+  type: ChatMessageType;
 }
 
 export interface CreateChatDto {

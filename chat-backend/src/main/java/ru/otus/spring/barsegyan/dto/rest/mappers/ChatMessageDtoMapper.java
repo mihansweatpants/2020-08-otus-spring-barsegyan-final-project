@@ -15,7 +15,8 @@ public class ChatMessageDtoMapper {
                 sentBy,
                 chatMessage.getSentAt(),
                 chatMessage.getText(),
-                chatMessage.getChat().getId()
+                chatMessage.getChat().getId(),
+                chatMessage.getChatMessageType()
         );
     }
 }

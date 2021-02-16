@@ -27,7 +27,7 @@ const ChatMessagesList: FC = () => {
 
         const markMessage = () => dispatch(markLastReadMessage(lastReadMessage.chatId, lastReadMessage.id));
 
-        if (lastReadMessage.sentBy.id === currentUserId) {
+        if (lastReadMessage.sentBy?.id === currentUserId) {
           markMessage();
         }
         else {

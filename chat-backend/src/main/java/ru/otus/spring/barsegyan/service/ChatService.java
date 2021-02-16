@@ -20,13 +20,16 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final ChatReadMarkService chatReadMarkService;
+    private final ChatMessageService chatMessageService;
 
     public ChatService(ChatRepository chatRepository,
                        UserRepository userRepository,
-                       ChatReadMarkService chatReadMarkService) {
+                       ChatReadMarkService chatReadMarkService,
+                       ChatMessageService chatMessageService) {
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
         this.chatReadMarkService = chatReadMarkService;
+        this.chatMessageService = chatMessageService;
     }
 
     @Transactional(readOnly = true)
@@ -47,6 +50,7 @@ public class ChatService {
 
         chatRepository.save(chat);
         chatReadMarkService.createReadMarksForChatMembers(chat, chat.getMembers());
+        chatMessageService.createServiceMessage(chat.getId(), String.format("New chat \"%s\" created", chat.getName()));
 
         return chat;
     }

@@ -37,15 +37,6 @@ const chats = createSlice({
     setSelectedChat(state, { payload }: PayloadAction<ChatDto>) {
       state.selectedChat = payload;
     },
-
-    updateChatsListWithNewMessage(state, { payload: newMessage }: PayloadAction<ChatMessageDto>) {
-      const updatedChatsList = state.chatsList
-          .map(chat => newMessage.chatId === chat.id ? ({ ...chat, lastMessage: newMessage }) : chat);
-
-      const sortedChatsList = sortByLastSentMessage(updatedChatsList);
-
-      state.chatsList = sortedChatsList;
-    },
   },
 });
 
@@ -61,7 +52,6 @@ export const {
   setSelectedChat,
   setChatsListLoading,
   setChatsListLoaded,
-  updateChatsListWithNewMessage,
 } = chats.actions;
 
 export default chats.reducer;
@@ -84,4 +74,19 @@ export const createChat = (data: CreateChatDto): AppThunk => async (dispatch, ge
 
   dispatch(setChatsList([newChat, ...existingChats]));
   dispatch(setSelectedChat(newChat));
+};
+
+export const updateChatsListWithNewMessage = (receivedMessage: ChatMessageDto): AppThunk => async (dispatch, getState) => {
+  const chatsList = getState().chats.chatsList;
+
+  if (!chatsList.find(chat => chat.id === receivedMessage.chatId)) {
+    await dispatch(fetchChats());
+    await dispatch(fetchReadMarks());
+  }
+  else {
+    const updatedChatsList = chatsList
+      .map(chat => receivedMessage.chatId === chat.id ? ({ ...chat, lastMessage: receivedMessage }) : chat);
+
+    dispatch(setChatsList(updatedChatsList));
+  }
 };

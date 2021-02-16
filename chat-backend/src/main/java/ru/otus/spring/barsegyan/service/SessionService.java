@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,12 +60,14 @@ public class SessionService {
 
     public List<UserDto> mapOnlineStatus(Collection<AppUser> users) {
         return users.stream()
-                .map(user -> UserDtoMapper.map(user, isUserOnline(user.getUsername())))
+                .map(this::mapOnlineStatus)
                 .collect(Collectors.toList());
     }
 
     public UserDto mapOnlineStatus(AppUser user) {
-        return UserDtoMapper.map(user, isUserOnline(user.getUsername()));
+        return Optional.ofNullable(user)
+                .map(value -> UserDtoMapper.map(user, isUserOnline(user.getUsername())))
+                .orElse(null);
     }
 
     public List<? extends Session> getUserSessions(String username) {

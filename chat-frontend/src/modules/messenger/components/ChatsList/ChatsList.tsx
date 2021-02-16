@@ -63,9 +63,13 @@ const ChatsList: FC = () => {
                 chat.lastMessage && (
                   <div className={styles.lastMessage}>
                     <div className={styles.chatPreviewContent}>
-                      <Typography display="inline" style={{ color: stringToHexColor(chat.lastMessage?.sentBy.username) }} className={styles.lastMessageSentBy}>
-                        {chat.lastMessage?.sentBy.username}:
-                      </Typography>
+                      {
+                        chat.lastMessage?.sentBy?.username && (
+                          <Typography display="inline" style={{ color: stringToHexColor(chat.lastMessage?.sentBy?.username) }} className={styles.lastMessageSentBy}>
+                            {chat.lastMessage?.sentBy?.username}:
+                          </Typography>
+                        )
+                      }
                       {' '}
                       <Typography display="inline" className={styles.lastMessageTextPreview}>
                         {chat.lastMessage?.text}

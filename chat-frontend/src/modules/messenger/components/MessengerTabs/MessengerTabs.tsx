@@ -28,7 +28,7 @@ const MessengerTabs: FC<Props> = ({
       const lastChatMessageId = chat.lastMessage?.id;
       const lastMarkedMessageId = readMarksByChatId[chat.id]?.lastReadMessageId;
 
-      if (lastChatMessageId != null && lastMarkedMessageId != null && lastChatMessageId !== lastMarkedMessageId) {
+      if (lastChatMessageId !== lastMarkedMessageId) {
         return unreadCount + 1;
       }
 

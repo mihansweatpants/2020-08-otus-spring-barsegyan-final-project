@@ -16,11 +16,14 @@ public class ChatDtoMapper {
                 Optional.ofNullable(chat.getLastMessage())
                         .map(lastMessage -> ChatMessageDtoMapper.map(
                                 lastMessage,
-                                chatMembers.stream()
-                                        .filter(member -> lastMessage.getSentBy().getId().equals(member.getId()))
-                                        .findFirst()
-                                        .get()))
-                        .orElse(null)
-        );
+                                Optional.ofNullable(lastMessage.getSentBy())
+                                        .map(lastMessageAuthor -> chatMembers.stream()
+                                                .filter(member -> lastMessageAuthor.getId().equals(member.getId()))
+                                                .findFirst()
+                                                .get()
+                                        )
+                                        .orElse(null)
+                        ))
+                        .orElse(null));
     }
 }

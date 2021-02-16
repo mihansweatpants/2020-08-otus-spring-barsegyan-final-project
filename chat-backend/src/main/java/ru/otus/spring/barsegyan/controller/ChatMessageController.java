@@ -53,7 +53,7 @@ public class ChatMessageController {
     public ApiResponse<Void> addMessage(@PathVariable UUID chatId, @RequestBody CreateMessageDto createMessageDto) {
         AppUserDetails currentUser = sessionService.getCurrentUser();
 
-        chatMessageService.createMessage(chatId, currentUser.getUserId(), createMessageDto);
+        chatMessageService.createUserMessage(chatId, currentUser.getUserId(), createMessageDto);
 
         return ApiResponse.ok();
     }

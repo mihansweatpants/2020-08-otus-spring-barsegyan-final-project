@@ -34,15 +34,29 @@ public class ChatMessageService {
         return chatMessageRepository.findAllByChat_Id(chatId, pageable);
     }
 
-    public ChatMessage createMessage(UUID chatId,
-                                     UUID sentById,
-                                     CreateMessageDto createMessageDto) {
+    public ChatMessage createUserMessage(UUID chatId,
+                                         UUID sentById,
+                                         CreateMessageDto createMessageDto) {
         ChatMessage chatMessage = new ChatMessage()
                 .setChatMessageType(ChatMessageType.USER_MESSAGE)
                 .setChat(chatRepository.getOne(chatId))
                 .setSentBy(userRepository.getOne(sentById))
                 .setSentAt(UTCTimeUtils.now())
                 .setText(createMessageDto.getText());
+
+        chatMessageRepository.save(chatMessage);
+
+        chatMessageNotificationService.notifyChatMembersOnNewMessage(chatMessage);
+
+        return chatMessage;
+    }
+
+    public ChatMessage createServiceMessage(UUID chatId, String messageText) {
+        ChatMessage chatMessage = new ChatMessage()
+                .setChatMessageType(ChatMessageType.SERVICE_MESSAGE)
+                .setChat(chatRepository.getOne(chatId))
+                .setSentAt(UTCTimeUtils.now())
+                .setText(messageText);
 
         chatMessageRepository.save(chatMessage);
 
