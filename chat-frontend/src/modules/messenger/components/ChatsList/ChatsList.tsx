@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
-import { List, ListItem, ListItemAvatar, Avatar, Typography } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Typography } from '@material-ui/core';
+import { Avatar } from 'components';
 
 import { ChatDto } from 'api/types/chats';
 
@@ -39,9 +40,10 @@ const ChatsList: FC = () => {
             className={styles.listItem}
           >
             <ListItemAvatar className={styles.listItemAvatar}>
-              <Avatar className={styles.chatAvatar} style={{ backgroundColor: stringToHexColor(chat.name) }}>
-                {chat.name[0].toUpperCase()}
-              </Avatar>
+              <Avatar
+                className={styles.chatAvatar}
+                fallback={chat.name}
+              />
             </ListItemAvatar>
 
             <div className={styles.chatPreview}>

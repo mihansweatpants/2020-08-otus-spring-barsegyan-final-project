@@ -19,6 +19,7 @@ export const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     display: 'flex',
     alignItems: 'flex-start',
+    wordBreak: 'break-all',
   },
 
   stretch: {

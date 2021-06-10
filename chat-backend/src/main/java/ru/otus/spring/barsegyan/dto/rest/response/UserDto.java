@@ -12,4 +12,5 @@ public class UserDto {
     private final String username;
     private final String email;
     private final Boolean isOnline;
+    private final String avatarUrl;
 }

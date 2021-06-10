@@ -11,8 +11,8 @@ import ru.otus.spring.barsegyan.dto.rest.request.UpdateChatMembersDto;
 import ru.otus.spring.barsegyan.dto.rest.response.ChatDto;
 import ru.otus.spring.barsegyan.dto.rest.response.UserDto;
 import ru.otus.spring.barsegyan.service.ChatService;
-import ru.otus.spring.barsegyan.service.SessionService;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.service.security.SessionService;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,7 +41,7 @@ public class ChatController {
 
     @GetMapping("/api/chats")
     public ApiResponse<List<ChatDto>> getAllUserChats() {
-        AppUserDetails currentUser = sessionService.getCurrentUser();
+        UserPrincipal currentUser = sessionService.getCurrentUser();
 
         List<ChatDto> chats = chatService.getChatsByMemberId(currentUser.getUserId())
                 .stream()

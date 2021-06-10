@@ -2,14 +2,13 @@ package ru.otus.spring.barsegyan.service.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.barsegyan.domain.AppUser;
 import ru.otus.spring.barsegyan.exception.NotFoundException;
 import ru.otus.spring.barsegyan.service.AppUserService;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -22,13 +21,13 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserPrincipal loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            AppUser user = appUserService.getByUsername(username);
+            AppUser user = appUserService.getByEmail(email);
 
-            logger.info("loadByUsername() : {}", username);
+            logger.info("loadByUsername() : {}", email);
 
-            return new AppUserDetails(user);
+            return UserPrincipal.of(user);
         }
         catch (NotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());

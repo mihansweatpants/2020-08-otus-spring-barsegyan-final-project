@@ -8,12 +8,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.barsegyan.service.SessionService;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
-
-import java.security.Principal;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 @Service
 public class AuthTokenChannelInterceptor implements ChannelInterceptor {
@@ -27,16 +23,16 @@ public class AuthTokenChannelInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor =
-                MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String authToken = accessor.getFirstNativeHeader("X-Auth-Token");
-            Authentication authentication = sessionService.getAuthentication(authToken);
-            AppUserDetails user = (AppUserDetails) authentication.getPrincipal();
-            accessor.setUser(user);
+            UserPrincipal userInSession = sessionService.getAuthenticationPrincipal(authToken);
+            accessor.setUser(userInSession);
 
-            logger.info("Established WebSocket connection for user {}", user.getUsername());
+            logger.info("Established WebSocket connection for user {}", userInSession.getUsername());
         }
+
         return message;
     }
 }

@@ -7,8 +7,8 @@ import ru.otus.spring.barsegyan.dto.rest.base.ApiResponse;
 import ru.otus.spring.barsegyan.dto.rest.mappers.ChatReadMarkDtoMapper;
 import ru.otus.spring.barsegyan.dto.rest.response.ChatReadMarkDto;
 import ru.otus.spring.barsegyan.service.ChatReadMarkService;
-import ru.otus.spring.barsegyan.service.SessionService;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.service.security.SessionService;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class ChatReadMarkController {
 
     @GetMapping("/api/read-marks")
     public ApiResponse<List<ChatReadMarkDto>> getUserReadMarks() {
-        AppUserDetails currentUser = sessionService.getCurrentUser();
+        UserPrincipal currentUser = sessionService.getCurrentUser();
 
         return ApiResponse.ok(chatReadMarkService.getAllUserReadMarks(currentUser.getUserId())
                 .stream()

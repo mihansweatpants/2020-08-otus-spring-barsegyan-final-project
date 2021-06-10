@@ -9,25 +9,25 @@ import ru.otus.spring.barsegyan.dto.rest.base.ApiResponse;
 import ru.otus.spring.barsegyan.dto.rest.request.LoginDto;
 import ru.otus.spring.barsegyan.dto.rest.request.CreateUserDto;
 import ru.otus.spring.barsegyan.service.AppUserService;
-import ru.otus.spring.barsegyan.service.AuthenticationService;
+import ru.otus.spring.barsegyan.service.security.LocalAuthenticationService;
 
 import javax.validation.Valid;
 
 @Api
 @RestController
 public class AuthController {
-    private final AuthenticationService authenticationService;
+    private final LocalAuthenticationService localAuthenticationService;
     private final AppUserService appUserService;
 
-    public AuthController(AuthenticationService authenticationService,
+    public AuthController(LocalAuthenticationService localAuthenticationService,
                           AppUserService appUserService) {
-        this.authenticationService = authenticationService;
+        this.localAuthenticationService = localAuthenticationService;
         this.appUserService = appUserService;
     }
 
     @PostMapping("/api/auth/sign-in")
     public ApiResponse<String> signIn(@RequestBody LoginDto loginDto) {
-        String token = authenticationService.authenticate(loginDto.getUsername(), loginDto.getPassword());
+        String token = localAuthenticationService.authenticate(loginDto.getEmail(), loginDto.getPassword());
 
         return ApiResponse.ok(token);
     }
@@ -36,7 +36,7 @@ public class AuthController {
     ApiResponse<String> signUp(@RequestBody @Valid CreateUserDto createUserDto) {
         AppUser appUser = appUserService.create(createUserDto);
 
-        String token = authenticationService.authenticate(appUser.getUsername(), createUserDto.getPassword());
+        String token = localAuthenticationService.authenticate(appUser.getEmail(), createUserDto.getPassword());
 
         return ApiResponse.ok(token);
     }

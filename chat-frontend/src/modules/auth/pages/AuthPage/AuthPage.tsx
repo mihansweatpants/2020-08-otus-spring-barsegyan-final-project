@@ -1,12 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useQueryParam, BooleanParam } from 'use-query-params';
+import { useQueryParam, BooleanParam, StringParam } from 'use-query-params';
 
-import { Avatar, Typography, TextField, Button, Link } from '@material-ui/core';
+import { Avatar, Typography, TextField, Button, Link, Snackbar } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
 
 import { useDispatch } from 'store';
 import { signIn, signUp } from 'store/auth/authSlice';
 
+import GoogleLogo from './google_logo.svg';
 import { useStyles } from './styles';
 
 const AuthPage: FC = () => {
@@ -14,6 +16,7 @@ const AuthPage: FC = () => {
   const dispatch = useDispatch();
 
   const [isSignUp, setIsSignUp] = useQueryParam('signUp', BooleanParam);
+  const [oauthError, setOauthError] = useQueryParam('oauthError', StringParam);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +33,7 @@ const AuthPage: FC = () => {
 
       isSignUp
         ? await dispatch(signUp({ username, password, email }))
-        : await dispatch(signIn({ username, password }));
+        : await dispatch(signIn({ email, password }));
     }
     catch {
       setIsSubmitFailed(true);
@@ -56,30 +59,30 @@ const AuthPage: FC = () => {
           Sign {isSignUp ? 'Up' : 'In'}
         </Typography>
 
-        <TextField
-          value={username}
-          onChange={({ target: { value } }) => setUsername(value)}
-          variant="outlined"
-          label="Username"
-          required
-          fullWidth
-          className={styles.formField}
-        />
-
         {
           isSignUp && (
             <TextField
-              value={email}
-              onChange={({ target: { value } }) => setEmail(value)}
+              value={username}
+              onChange={({ target: { value } }) => setUsername(value)}
               variant="outlined"
-              label="Email Address"
-              type="email"
+              label="Username"
               required
               fullWidth
               className={styles.formField}
             />
           )
         }
+
+        <TextField
+          value={email}
+          onChange={({ target: { value } }) => setEmail(value)}
+          variant="outlined"
+          label="Email Address"
+          type="email"
+          required
+          fullWidth
+          className={styles.formField}
+        />
 
         <TextField
           value={password}
@@ -108,16 +111,32 @@ const AuthPage: FC = () => {
           )
         }
 
-        <Button
-          disabled={isSubmitting}
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          className={styles.submitButton}
-        >
-          Sign {isSignUp ? 'Up' : 'In'}
-        </Button>
+        <div className={styles.submit}>
+          <Button
+            disabled={isSubmitting}
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={styles.loginButton}
+          >
+            Sign {isSignUp ? 'Up' : 'In'}
+          </Button>
+
+          <a
+            href="http://localhost:8080/oauth2/authorization/google"
+            className={styles.loginButtonLink}
+          >
+            <Button
+              type="button"
+              className={styles.loginButton}
+              variant="outlined"
+            >
+              Sign in with Google
+
+              <img src={GoogleLogo} className={styles.providerIcon} alt="" />
+            </Button>
+          </a>
+        </div>
 
         {
           isSignUp
@@ -133,6 +152,16 @@ const AuthPage: FC = () => {
               )
         }
       </form>
+
+      <Snackbar
+        open={oauthError != null}
+        message={oauthError}
+      >
+        <Alert onClose={() => setOauthError(null)} severity="error">
+          <AlertTitle>Sign In failed</AlertTitle>
+          {oauthError}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

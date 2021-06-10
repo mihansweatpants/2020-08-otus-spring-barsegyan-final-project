@@ -2,7 +2,7 @@ package ru.otus.spring.barsegyan.dto.rest.mappers;
 
 import ru.otus.spring.barsegyan.domain.AppUser;
 import ru.otus.spring.barsegyan.dto.rest.response.UserDto;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 public class UserDtoMapper {
     public static UserDto map(AppUser appUser, Boolean isOnline) {
@@ -10,16 +10,18 @@ public class UserDtoMapper {
                 appUser.getId(),
                 appUser.getUsername(),
                 appUser.getEmail(),
-                isOnline
+                isOnline,
+                appUser.getAvatarUrl()
         );
     }
 
-    public static UserDto map(AppUserDetails appUserDetails, Boolean isOnline) {
+    public static UserDto map(UserPrincipal userInSession, Boolean isOnline) {
         return new UserDto(
-                appUserDetails.getUserId(),
-                appUserDetails.getUsername(),
-                appUserDetails.getEmail(),
-                isOnline
+                userInSession.getUserId(),
+                userInSession.getUsername(),
+                userInSession.getEmail(),
+                isOnline,
+                userInSession.getAvatarUrl()
         );
     }
 }

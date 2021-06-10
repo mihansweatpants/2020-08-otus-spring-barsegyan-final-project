@@ -9,10 +9,9 @@ import ru.otus.spring.barsegyan.dto.rest.base.ApiResponse;
 import ru.otus.spring.barsegyan.dto.rest.mappers.SessionDtoMapper;
 import ru.otus.spring.barsegyan.dto.rest.request.InvalidateSessionsDto;
 import ru.otus.spring.barsegyan.dto.rest.response.SessionDto;
-import ru.otus.spring.barsegyan.service.SessionService;
+import ru.otus.spring.barsegyan.service.security.SessionService;
 
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 

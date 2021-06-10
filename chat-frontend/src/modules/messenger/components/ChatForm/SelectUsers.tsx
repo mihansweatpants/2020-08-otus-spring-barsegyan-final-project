@@ -3,7 +3,6 @@ import React, { FC, useState, useEffect } from 'react';
 import {
   TextField,
   Chip,
-  Avatar,
   List,
   ListItem,
   ListItemText,
@@ -12,13 +11,13 @@ import {
   Badge,
 } from '@material-ui/core';
 import { CheckCircleRounded as CheckCircleRoundedIcon } from '@material-ui/icons';
+import { Avatar } from 'components';
 
 import { UsersApi } from 'api';
 import { UserDto } from 'api/types/users';
 
 import { usePagination } from 'utils/usePagination';
 import { useDebounce } from 'utils/useDebounce';
-import { stringToHexColor } from 'utils/colors';
 import { highlightText } from 'utils/hightlightText';
 
 import { useSelectUsersStyles } from './styles';
@@ -95,9 +94,10 @@ const SelectUsers: FC<Props> = ({
                   className={styles.chip}
                   onDelete={isValueDisabled(user) ? undefined : () => unselectUser(user)}
                   avatar={
-                    <Avatar style={{ backgroundColor: stringToHexColor(user.username) }}>
-                      {user.username[0].toUpperCase()}
-                    </Avatar>
+                    <Avatar
+                      pictureUrl={user.avatarUrl}
+                      fallback={user.username}
+                    />
                   }
                 />
               ))
@@ -121,9 +121,10 @@ const SelectUsers: FC<Props> = ({
                   }}
                   overlap="circle"
                 >
-                  <Avatar style={{ backgroundColor: stringToHexColor(foundUser.username) }}>
-                    {foundUser.username[0].toUpperCase()}
-                  </Avatar>
+                  <Avatar
+                    pictureUrl={foundUser.avatarUrl}
+                    fallback={foundUser.username}
+                  />
                 </Badge>
               </ListItemAvatar>
               <ListItemText primary={highlightText(foundUser.username)} secondary={highlightText(foundUser.email)} />

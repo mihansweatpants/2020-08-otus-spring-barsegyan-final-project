@@ -6,6 +6,7 @@ import ru.otus.spring.barsegyan.domain.ChatMessage;
 import ru.otus.spring.barsegyan.dto.rest.mappers.ChatMessageDtoMapper;
 import ru.otus.spring.barsegyan.dto.ws.NotificationDto;
 import ru.otus.spring.barsegyan.dto.ws.NotificationType;
+import ru.otus.spring.barsegyan.service.security.SessionService;
 
 @Service
 public class ChatMessageNotificationService {
@@ -22,7 +23,7 @@ public class ChatMessageNotificationService {
         chatMessage.getChat()
                 .getMembers()
                 .forEach(user -> messagingTemplate.convertAndSendToUser(
-                        user.getUsername(),
+                        user.getId().toString(),
                         "/queue/updates",
                         new NotificationDto(
                                 NotificationType.NEW_MESSAGE,

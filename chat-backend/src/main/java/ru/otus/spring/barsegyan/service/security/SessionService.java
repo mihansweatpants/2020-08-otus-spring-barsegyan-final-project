@@ -1,4 +1,4 @@
-package ru.otus.spring.barsegyan.service;
+package ru.otus.spring.barsegyan.service.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.spring.barsegyan.domain.AppUser;
 import ru.otus.spring.barsegyan.dto.rest.mappers.UserDtoMapper;
 import ru.otus.spring.barsegyan.dto.rest.response.UserDto;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 import ru.otus.spring.barsegyan.util.UTCTimeUtils;
 
 import java.time.Duration;
@@ -32,10 +32,10 @@ public class SessionService {
         this.findByIndexNameSessionRepository = findByIndexNameSessionRepository;
     }
 
-    public AppUserDetails getCurrentUser() {
+    public UserPrincipal getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return (AppUserDetails) principal;
+        return (UserPrincipal) principal;
     }
 
     public void invalidateSession(String sessionId) {
@@ -87,11 +87,12 @@ public class SessionService {
         return newSession;
     }
 
-    public Authentication getAuthentication(String token) {
+    public UserPrincipal getAuthenticationPrincipal(String token) {
         Session session = findByIndexNameSessionRepository.findById(token);
 
         SecurityContext securityContext = session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+        Object principal = securityContext.getAuthentication().getPrincipal();
 
-        return securityContext.getAuthentication();
+        return (UserPrincipal) principal;
     }
 }

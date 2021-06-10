@@ -2,7 +2,8 @@ import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse, 
 import qs from 'query-string';
 import { BasepApiResponse } from 'api/types/base/response';
 
-const LOGIN_ROUTE = '/login';
+const LOGIN_ROUTE = '/auth';
+const OAUTH_REDIRECT_ROUTE = '/oauth/redirect';
 
 export default abstract class HttpApi {
   protected http: AxiosInstance;
@@ -92,7 +93,7 @@ export default abstract class HttpApi {
     catch (error) {
       const { response }: AxiosError = error;
 
-      if (response != null && response.status === 403 && window.location.pathname !== LOGIN_ROUTE) {
+      if (response != null && response.status === 403 && ![LOGIN_ROUTE, OAUTH_REDIRECT_ROUTE].includes(window.location.pathname)) {
         window.location.href = LOGIN_ROUTE;
       }
 
