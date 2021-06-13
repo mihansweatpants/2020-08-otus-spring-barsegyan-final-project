@@ -23,18 +23,29 @@ public class AppUser {
     @Column(name = "is_blocked")
     private Boolean isBlocked = false;
 
+    @Column(name = "provider")
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     public AppUser() {}
 
     public AppUser(UUID id,
                    String username,
                    String email,
                    String password,
-                   Boolean isBlocked) {
+                   Boolean isBlocked,
+                   AuthProvider authProvider,
+                   String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.isBlocked = isBlocked;
+        this.authProvider = authProvider;
+        this.avatarUrl = avatarUrl;
     }
 
     public UUID getId() {
@@ -57,6 +68,14 @@ public class AppUser {
         return isBlocked;
     }
 
+    public AuthProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
     public AppUser setUsername(String username) {
         this.username = username;
         return this;
@@ -74,6 +93,16 @@ public class AppUser {
 
     public AppUser setBlocked(Boolean blocked) {
         isBlocked = blocked;
+        return this;
+    }
+
+    public AppUser setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+        return this;
+    }
+
+    public AppUser setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
         return this;
     }
 }

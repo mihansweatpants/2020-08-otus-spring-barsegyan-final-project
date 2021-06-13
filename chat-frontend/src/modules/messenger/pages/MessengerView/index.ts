@@ -1,1 +1,1 @@
-export { default as MessengerView } from './MessengerView';
+export { default } from './MessengerView';

@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react';
 
-import { Avatar, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { Avatar } from 'components';
 
 import { ChatMessageDto, ChatMessageType } from 'api/types/chats';
 
@@ -38,9 +39,10 @@ const MessagesListItem: FC<Props> = ({ message }) => {
 
   return (
     <div className={styles.message}>
-      <Avatar style={{ backgroundColor: stringToHexColor(message.sentBy?.username) }}>
-        {message.sentBy != null ? message.sentBy.username[0].toUpperCase() : '!'}
-      </Avatar>
+      <Avatar
+        pictureUrl={message.sentBy?.avatarUrl}
+        fallback={message.sentBy != null ? message.sentBy.username[0].toUpperCase() : '!'}
+      />
 
       <div className={styles.stretch}>
         <div className={styles.messageHeader}>

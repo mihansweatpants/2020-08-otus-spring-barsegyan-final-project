@@ -1,4 +1,4 @@
-package ru.otus.spring.barsegyan.service;
+package ru.otus.spring.barsegyan.service.security;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,22 +9,22 @@ import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService {
+public class LocalAuthenticationService {
 
     private final SessionService sessionService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(SessionService sessionService,
-                                 AuthenticationManager authenticationManager) {
+    public LocalAuthenticationService(SessionService sessionService,
+                                      AuthenticationManager authenticationManager) {
         this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
     }
 
-    public String authenticate(String username, String password) {
+    public String authenticate(String email, String password) {
         Authentication authentication;
 
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         }
         catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid username or password", e);

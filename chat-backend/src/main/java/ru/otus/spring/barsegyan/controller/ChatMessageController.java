@@ -12,8 +12,8 @@ import ru.otus.spring.barsegyan.dto.rest.mappers.ChatMessageDtoMapper;
 import ru.otus.spring.barsegyan.dto.rest.request.CreateMessageDto;
 import ru.otus.spring.barsegyan.dto.rest.response.ChatMessageDto;
 import ru.otus.spring.barsegyan.service.ChatMessageService;
-import ru.otus.spring.barsegyan.service.SessionService;
-import ru.otus.spring.barsegyan.type.AppUserDetails;
+import ru.otus.spring.barsegyan.service.security.SessionService;
+import ru.otus.spring.barsegyan.type.UserPrincipal;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -51,7 +51,7 @@ public class ChatMessageController {
 
     @PostMapping("/api/chats/{chatId}/messages")
     public ApiResponse<Void> addMessage(@PathVariable UUID chatId, @RequestBody CreateMessageDto createMessageDto) {
-        AppUserDetails currentUser = sessionService.getCurrentUser();
+        UserPrincipal currentUser = sessionService.getCurrentUser();
 
         chatMessageService.createUserMessage(chatId, currentUser.getUserId(), createMessageDto);
 

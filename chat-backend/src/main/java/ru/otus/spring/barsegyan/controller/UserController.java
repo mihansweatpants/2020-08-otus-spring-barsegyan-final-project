@@ -12,7 +12,7 @@ import ru.otus.spring.barsegyan.dto.rest.base.Pagination;
 import ru.otus.spring.barsegyan.dto.rest.mappers.UserDtoMapper;
 import ru.otus.spring.barsegyan.dto.rest.response.UserDto;
 import ru.otus.spring.barsegyan.service.AppUserService;
-import ru.otus.spring.barsegyan.service.SessionService;
+import ru.otus.spring.barsegyan.service.security.SessionService;
 
 @Api
 @RestController

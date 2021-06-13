@@ -11,7 +11,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.*;
 
 public interface UserRepository extends JpaSpecificationExecutor<AppUser>, JpaRepository<AppUser, UUID> {
-    Optional<AppUser> findByUsername(String username);
+    Optional<AppUser> findByEmail(String email);
 
     Set<AppUser> findAllByIdIn(List<UUID> userIds);
 
